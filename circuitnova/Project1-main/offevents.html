@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline Events - CircuitNova</title>
+    <style>
+        * {
+            margin: 0;
+            scroll-behavior: smooth;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            font-family: 'Arial', sans-serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .preloader-content img {
+            width: auto;
+            height: auto;
+            animation: shine 2s infinite linear;
+        }
+
+        @keyframes shine {
+            0% { filter: brightness(100%); }
+            50% { filter: brightness(250%); }
+            100% { filter: brightness(100%); }
+        }
+
+        .fade-out {
+            animation: fadeOut 1s ease forwards;
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        .main-content {
+            display: none;
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+        }
+
+        .title {
+            font-size: 3rem;
+            text-align: center;
+            margin: 20px 0 40px;
+            background: linear-gradient(90deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff; }
+            100% { text-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff; }
+        }
+
+        .events-top, .event-bottom {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .events-top {
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+
+        .event-bottom {
+            justify-content: center;
+        }
+
+        .event {
+            width: 250px;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+            font-style: oblique;
+        }
+
+        .event-date {
+            color: #ff00ff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 50px;
+            animation: glow 2s infinite alternate;
+        }
+
+        .event-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        .event.flipped .event-inner {
+            transform: rotateY(180deg);
+        }
+
+        .event-front, .event-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backface-visibility: hidden;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+        }
+
+        .event-front {
+            background: rgba(255, 255, 255, 0.1);
+            flex-direction: column;
+        }
+
+        .event-front img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .event-front h3 {
+            color: #00ffff;
+            text-align: center;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .event-back {
+            background: rgba(76, 3, 172, 0.12);
+            transform: rotateY(180deg);
+            text-align: center;
+            flex-direction: column;
+        }
+
+        .event-back p {
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .event-back a {
+            padding: 10px 15px;
+            background: transparent;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            border: 2px solid #00ffff;
+        }
+
+        .event-bottom {
+    justify-content: center;
+    gap: 50px;  /* Adds space between the event cards */
+    margin-bottom: 40px;  /* Optional: Adds some space below the last row */
+}
+
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+            z-index: -1;
+            animation: moveBackground 10s infinite alternate;
+        }
+
+        @keyframes moveBackground {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+    <div class="preloader">
+        <div class="preloader-content">
+            <img src="https://raw.githubusercontent.com/sidharthmpillai/Project1/refs/heads/main/CIRCUITNOVA_20250201_231508_0000.png" alt="Loading...">
+        </div>
+    </div>
+
+    <div class="main-content">
+        <h2 class="title"><strong>Offline Events</strong></h2>
+        <p class="event-date">March 1,2</p>
+    
+        <div class="events-top">
+            <!-- Event 1 -->
+            <div class="event" onclick="flipCard(this)">
+                <div class="event-inner">
+                    <div class="event-front">
+                        <img src="https://raw.githubusercontent.com/sidharthmpillai/Project1/refs/heads/main/circuithon.webp" alt="circuithon">
+                        <h3>Circuithon</h3>
+                    </div>
+                    <div class="event-back">
+                        <p>Circuithon is a hardware hackathon where participants design, build, and test electronic circuits within a set time.</p>
+                        <a href="https://docs.google.com/forms/d/1j17HjqMs7NCYrfeJAkeuVnnPyXymHfiycCV-zV4lboU/viewform">Register</a>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Event 2 -->
+            <div class="event" onclick="flipCard(this)">
+                <div class="event-inner">
+                    <div class="event-front">
+                        <img src="https://raw.githubusercontent.com/sidharthmpillai/Project1/refs/heads/main/soldering.webp" alt="soldering">
+                        <h3>Soldering Project Contest</h3>
+                    </div>
+                    <div class="event-back">
+                        <p>Complete beginner-friendly soldering projects and hone your skills within a set time.</p>
+                        <a href="https://docs.google.com/forms/d/1m2qdAo94kqfnOzV2JLrc2J_bzIb-y_PHs_PXylBxlls/viewform">Register</a>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Event 3 -->
+            <div class="event" onclick="flipCard(this)">
+                <div class="event-inner">
+                    <div class="event-front">
+                        <img src="https://raw.githubusercontent.com/sidharthmpillai/Project1/refs/heads/main/circuit karaoke.webp" alt="circuitkaraoke">
+                        <h3>Circuit Karaoke</h3>
+                    </div>
+                    <div class="event-back">
+                        <p>Test your speed and precision in wiring circuits neatly and accurately in this challenge.</p>
+                        <a href="https://docs.google.com/forms/d/1CMFPgWmROg0BxNVVShxeKs3cxRpd6FXTyAt-ca2Hqw4/viewform">Register</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="event-bottom">
+            <!-- Event 4 -->
+            <div class="event" onclick="flipCard(this)">
+                <div class="event-inner">
+                    <div class="event-front">
+                        <img src="https://raw.githubusercontent.com/sidharthmpillai/Project1/refs/heads/main/talk session.webp" alt="talksession">
+                        <h3>Talk Session: How to Speak like an Engineer</h3>
+                    </div>
+                    <div class="event-back">
+                        <p>Enhance your technical communication skills for better presentations and collaborations.</p>
+                        <a href="https://docs.google.com/forms/d/1Dp1A8htLaClA7Cyf2l8KgG4RrVMOk5hlvRl-VikSYMA/viewform">Register</a>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Event 5 -->
+            <div class="event" onclick="flipCard(this)">
+                <div class="event-inner">
+                    <div class="event-front">
+                        <img src="https://raw.githubusercontent.com/sidharthmpillai/Project1/refs/heads/main/panel discussion.webp" alt="paneldiscussion">
+                        <h3>Panel Discussion</h3>
+                    </div>
+                    <div class="event-back">
+                        <p>Join industry experts for dynamic conversations on key topics and innovations.</p>
+                        <a href="https://docs.google.com/forms/d/1ZJ4RyFO-WJWX2ZGmNZavlaMiu_wft1p43jVxkHslKt0/viewform">Register</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <script>
+        function flipCard(card) {
+            card.classList.toggle("flipped");
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(() => {
+                document.querySelector(".preloader").classList.add("fade-out");
+                document.querySelector(".main-content").style.display = "block";
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
+
