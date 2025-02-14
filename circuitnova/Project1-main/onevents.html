@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Events - CircuitNova</title>
+    <style>
+        * {
+            margin: 0;
+            scroll-behavior: smooth;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            font-family: 'Arial', sans-serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .preloader-content img {
+            width: auto;
+            height: auto;
+            animation: shine 2s infinite linear;
+        }
+
+        @keyframes shine {
+            0% { filter: brightness(100%); }
+            50% { filter: brightness(250%); }
+            100% { filter: brightness(100%); }
+        }
+
+        .fade-out {
+            animation: fadeOut 1s ease forwards;
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        /* Main content */
+        .main-content {
+            display: none;
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+        }
+
+        .title {
+            font-size: 3rem;
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 40px;
+            background: linear-gradient(90deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff; }
+            100% { text-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff; }
+        }
+
+        /* Events container */
+        .events-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;  /* Allow wrapping to the next line */
+            padding: 20px;
+        }
+
+        /* Flip Card Styling */
+        .event {
+            width: 250px;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+            line-height: 20px;
+            margin: 10px; /* Add margin for spacing */
+        }
+
+        .event-date {
+            color: #ff00ff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: glow 2s infinite alternate;
+        }
+
+        .event-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .event.flipped .event-inner {
+            transform: rotateY(180deg);
+        }
+
+        .event-front, .event-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            backface-visibility: hidden;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .event-front {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .event-front img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .event-front h3 {
+            color: #00ffff;
+            text-align: center;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .event-back {
+            background: rgba(76, 3, 172, 0.12);
+            transform: rotateY(180deg);
+            text-align: center;
+        }
+
+        .event-back p {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .event-back a {
+            padding: 8px 12px;
+            background: transparent;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            border: 4px solid #00ffff;
+        }
+
+        /* Background animation */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+            z-index: -1;
+            animation: moveBackground 10s infinite alternate;
+        }
+
+        @keyframes moveBackground {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.2); }
+        }
+
+        .event {
+            font-style: oblique;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="preloader-content">
+            <img src="https://raw.githubusercontent.com/sidharthmpillai/Project1/refs/heads/main/CIRCUITNOVA_20250201_231508_0000.png" alt="Loading..." class="shining-logo">
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h2 class="title"><strong>Online Events</strong></h2>
+        <p class="event-date">February 22,23</p>
+    
+        <!-- Event Container (wraps all the events) -->
+        <div class="events-container">
+            <div class="event" onclick="flipCard(this)">
+                <div class="event-inner">
+                    <div class="event-front">
+                        <img src="https://raw.githubusercontent.com/sidharthmpillai/Project1/refs/heads/main/Tech essay.webp" alt="Tech Essay">
+                        <h3>Tech Essay</h3>
+                    </div>
+                    <div class="event-back">
+                        <p>Tech Essays invites participants to choose from intriguing topics and submit well-researched essays...</p>
+                        <a href="https://docs.google.com/forms/d/1rL8M2vtBVYjhUhUoEESFMguXhcRsfrzaOFD0Q7VejBU/viewform" target="_blank">Register</a>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="event" onclick="flipCard(this)">
+                <div class="event-inner">
+                    <div class="event-front">
+                        <img src="https://raw.githubusercontent.com/sidharthmpillai/Project1/refs/heads/main/techmeme.webp" alt="Tech Meme">
+                        <h3>Tech Meme Contest</h3>
+                    </div>
+                    <div class="event-back">
+                        <p>A fun and creative competition where participants create hilarious, tech-inspired memes...</p>
+                        <a href="https://docs.google.com/forms/d/1cLsf-Uef75lOoWlX5hBi1wbCHRr7l5aDYszsSRtPenA/viewform" target="_blank">Register</a>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="event" onclick="flipCard(this)">
+                <div class="event-inner">
+                    <div class="event-front">
+                        <img src="https://raw.githubusercontent.com/sidharthmpillai/Project1/refs/heads/main/comic strip.webp" alt="Circuit Comic Strip">
+                        <h3>Circuit Comic Strip</h3>
+                    </div>
+                    <div class="event-back">
+                        <p>A creative challenge where participants design a comic strip based on circuitry concepts...</p>
+                        <a href="https://docs.google.com/forms/d/1FFKUMMyeazo4YSQ4rKn13qcCV1FIbbMhri365KskEow/viewform" target="_blank">Register</a>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="event" onclick="flipCard(this)">
+                <div class="event-inner">
+                    <div class="event-front">
+                        <img src="https://raw.githubusercontent.com/sidharthmpillai/Project1/refs/heads/main/tech roast.webp" alt="Tech Roast Battle">
+                        <h3>Tech Roast Battle</h3>
+                    </div>
+                    <div class="event-back">
+                        <p>A virtual showdown where participants roast tech gadgets, trends, and experiences...</p>
+                        <a href="https://docs.google.com/forms/d/1rBV_6Oe_CfegYQwxECzYw7qAJg9aam5xPoqTEapGdXc/viewform" target="_blank">Register</a>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- Closing events-container -->
+    </div>
+    
+
+    <script>
+        function flipCard(card) {
+            card.classList.toggle("flipped");
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(() => {
+                document.querySelector(".preloader").classList.add("fade-out");
+                document.querySelector(".main-content").style.display = "block";
+            }, 3000);
+        });
+    </script>
+
+</body>
+</html>
+
